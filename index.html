@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color Your Day · 每日颜色</title>
+<meta name="description" content="从 365 个有来头的颜色里，每天给你一个 —— 传统色、历史颜料、品牌命名色、有故事的色。点开方阵下方按钮查看今天的颜色、色号与它背后的故事。">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/css/style.css">
+<!-- 主题防闪：在 CSS 生效前就把存储的主题写上，避免深浅闪一下 -->
+<script>
+try {
+  var __t = localStorage.getItem("cyd-theme");
+  if (__t !== "light" && __t !== "dark") __t = "dark";
+  document.documentElement.setAttribute("data-theme", __t);
+} catch (e) {}
+</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-tools">
+    <button type="button" class="tool-btn" id="langBtn" data-i18n-a="uiLangAria" aria-label="Switch to English"><span data-i18n="uiLangBtn">EN</span></button>
+    <button type="button" class="tool-btn" id="themeBtn" data-i18n-a="uiThemeAria" aria-label="切换明暗主题">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 3.8v16.4"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="wrap">
+    <div class="lead">
+      <h1 data-i18n="uiH1">每日颜色</h1>
+      <p data-i18n="uiSub">从 365 个有来头的颜色里，每天给你一个</p>
+    </div>
+
+    <!-- 每日颜色方阵（结构取自摄影站 index.html）
+         方阵由 JS 建格：每次载入从颜色库里随机抽 64 个颜色，沿左下 → 右上的
+         对角线逐块变亮（浅色主题镜像成右上 → 左下，切主题时从另一个角重铺一遍）
+         —— 所以它**不透露**今天是什么颜色，得点那颗金色按钮翻开才知道。 -->
+    <div class="hero-cd" id="heroCD">
+      <div class="cd-head">
+        <p class="cd-brand">Color Your Day</p>
+      </div>
+      <div class="cd-grid" id="cdGrid" role="img" data-i18n-a="cdGridAria"></div>
+      <div class="cd-foot">
+        <button type="button" class="cd-btn" id="cdBtn" data-i18n-a="cdBtnAria">
+          <span class="sp" aria-hidden="true">✦</span><span data-i18n="cdBtn">每日颜色</span><span class="ar" aria-hidden="true">→</span>
+        </button>
+        <p class="cd-cap" id="cdCap"></p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <p>
+    <span data-i18n="uiFoot">365 个颜色 · 一天一个 · 有历史也有趣闻</span><br>
+    <a href="https://github.com/QIXIANG-258/color-your-day" target="_blank" rel="noopener">GitHub</a>
+    · AGPL-3.0
+    · <a href="https://blog.qxt1me.dpdns.org" target="_blank" rel="noopener">憩想 · 个人摄影</a>
+  </p>
+</footer>
+
+<!-- 每日颜色详情（点「每日颜色 →」翻开；背景雾化）
+     左栏：色块 + 色号 + RGB      右栏：历史与趣闻 —— 中间一道竖线分开 -->
+<div id="cdModal" aria-hidden="true">
+  <div class="cd-bg" data-cd-close></div>
+  <div class="cd-card" role="dialog" aria-modal="true" data-i18n-a="cdAria">
+    <button class="cd-x" data-cd-close type="button" data-i18n-a="cdClose">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6.6 6.6l10.8 10.8M17.4 6.6L6.6 17.4"/></svg>
+    </button>
+    <div class="cd-detail">
+      <div class="cd-left">
+        <div class="cd-swatch" id="cdSwatch"><span class="cd-sw-name" id="cdSwName"></span></div>
+        <p class="cd-lbl" data-i18n="cdHexLabel">色号</p>
+        <p class="cd-hex" id="cdHex"></p>
+        <dl class="cd-rgb" id="cdRgb"></dl>
+      </div>
+      <div class="cd-right">
+        <p class="cd-cat" id="cdCat"></p>
+        <h3 class="cd-name" id="cdName"></h3>
+        <p class="cd-alias" id="cdAlias"></p>
+        <p class="cd-lbl" data-i18n="cdHistLabel">历史</p>
+        <p class="cd-hist" id="cdHist"></p>
+        <p class="cd-lbl" data-i18n="cdFunLabel">趣闻</p>
+        <p class="cd-fun" id="cdFun"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 数据先于逻辑加载（defer 保序）：QB_COLORS 是 365 条全文 -->
+<script src="assets/js/colors_data.js" defer></script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
